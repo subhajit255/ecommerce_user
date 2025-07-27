@@ -20,7 +20,6 @@ public class GoogleAuthService {
                     new NetHttpTransport(),
                     JacksonFactory.getDefaultInstance()
             ).setAudience(Collections.singletonList(CLIENT_ID)).build();
-
             GoogleIdToken idToken = verifier.verify(idTokenString);
             if (idToken == null) throw new RuntimeException("Invalid ID token");
             return idToken.getPayload();

@@ -48,6 +48,7 @@ public class AuthServiceImpl implements AuthService {
         Role userRole = roleRepository.findById("USER")
                 .orElseThrow(() -> new RuntimeException("role not found"));
         user.setRoles(Set.of(userRole));
+        user.setRegSrc("CUSTOM");
         // save the user info in db and return
         User isUserSaved = userRepository.save(user);
         String token = null;
@@ -93,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponseDto googleLogin(String idTokenString) {
         GoogleIdToken.Payload payload = GoogleAuthService.verifyToken(idTokenString);
-
+        String defaultPassword = "12345678";
         String email = payload.getEmail();
         String firstName = (String) payload.get("given_name");
         String lastName = (String) payload.get("family_name");
@@ -106,6 +107,8 @@ public class AuthServiceImpl implements AuthService {
             user.setEmail(email);
             user.setFirstName(firstName);
             user.setLastName(lastName);
+            user.setRegSrc("GOOGLE");
+            user.setPassword(encoder.encode(defaultPassword));
             user = userRepository.save(user);
         }
 

@@ -52,6 +52,8 @@ public class User {
     private boolean available = true;
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
+    @Column(name = "reg_src")
+    private String regSrc;
     // relations
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference

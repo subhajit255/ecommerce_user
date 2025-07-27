@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/**",
-                                "/login"
+                                "/login",
+                                "/google-login"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
