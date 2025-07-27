@@ -24,14 +24,27 @@ public class UserAddress {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private AddressType type;
     @Column(name = "full_address")
     private String fullAddress;
     @Column(name = "latitude")
     private String latitude;
     @Column(name = "longitude")
     private String longitude;
+    @Column(name = "country")
+    private String country;
+    @Column(name = "state")
+    private String state;
+    @Column(name = "city")
+    private String city;
     @Column(name = "zipcode")
     private int zipCode;
+    @Column(name = "apartment")
+    private String apartment;
+    @Column(name = "floor")
+    private String floor;
     @Column(name = "is_default")
     private boolean isDefault = false;
     @Column(name = "created_at")

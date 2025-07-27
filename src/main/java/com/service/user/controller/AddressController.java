@@ -48,7 +48,7 @@ public class AddressController {
             );
         }
     }
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getAddressesOfUser(@RequestAttribute UUID userId){
         System.out.println("user_id " + userId);
         try{
@@ -110,7 +110,7 @@ public class AddressController {
     @GetMapping("{addressId}")
     public ResponseEntity<?> setAddressDefault(@PathVariable UUID addressId, @RequestAttribute UUID userId){
         try{
-            Boolean isAddressDefault = addressService.setAddressDefault(addressId);
+            Boolean isAddressDefault = addressService.setAddressDefault(addressId, userId);
             return ResponseEntity.status(HttpStatus.OK).body(
                     Map.of(
                             "status", true,

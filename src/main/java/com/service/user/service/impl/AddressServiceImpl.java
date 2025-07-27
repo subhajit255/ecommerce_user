@@ -23,9 +23,13 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public UserAddress addAddress(UserAddressRequest userAddressRequest, UUID userId) {
         UserAddress userAddress = new UserAddress();
+        userAddress.setType(userAddressRequest.getAddressType());
         userAddress.setFullAddress(userAddressRequest.getFullAddress());
         userAddress.setLatitude(userAddressRequest.getLatitude());
         userAddress.setLongitude(userAddressRequest.getLongitude());
+        userAddress.setCountry(userAddressRequest.getCountry());
+        userAddress.setState(userAddressRequest.getState());
+        userAddress.setCity(userAddressRequest.getCity());
         userAddress.setZipCode(userAddressRequest.getZipCode());
         userAddress.setUser(authService.getUser(userId));
         // save the entry
@@ -45,9 +49,13 @@ public class AddressServiceImpl implements AddressService {
         UserAddress userAddress = addressRepository.findById(addressId).orElseThrow(
                 () -> new RuntimeException("address not found with that given id " + addressId)
         );
+        userAddress.setType(userAddressRequest.getAddressType());
         userAddress.setFullAddress(userAddressRequest.getFullAddress());
         userAddress.setLatitude(userAddressRequest.getLatitude());
         userAddress.setLongitude(userAddressRequest.getLongitude());
+        userAddress.setCountry(userAddressRequest.getCountry());
+        userAddress.setState(userAddressRequest.getState());
+        userAddress.setCity(userAddressRequest.getCity());
         userAddress.setZipCode(userAddressRequest.getZipCode());
 
         return addressRepository.save(userAddress);
@@ -62,10 +70,22 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public boolean setAddressDefault(UUID addressId) {
+    public boolean setAddressDefault(UUID addressId, UUID userId) {
         UserAddress userAddress = addressRepository.findById(addressId).orElseThrow(
                 () -> new RuntimeException("address not found with that given id " + addressId)
         );
+        // check and update if any other address is set to default
+        addressRepository.findAll().stream()
+                        .filter(
+                                address -> address.getUser().equals(authService.getUser(userId))
+                        ).peek(
+                                addr -> addr.setDefault(false)
+                        )
+//                      .map(addr -> {
+//                            addr.setDefault(false);
+//                            return addr;
+//                        })
+                        .collect(Collectors.toList());
         userAddress.setDefault(true);
         addressRepository.save(userAddress);
         return true;

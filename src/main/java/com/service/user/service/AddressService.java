@@ -11,5 +11,5 @@ public interface AddressService {
     List<UserAddress> addresses(UUID userId);
     UserAddress updateAddress(UserAddressRequest userAddressRequest, UUID addressId);
     void deleteAddress(UUID addressId);
-    boolean setAddressDefault(UUID addressId);
+    boolean setAddressDefault(UUID addressId, UUID userId);
 }
